@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,6 +24,7 @@ public class Estado implements Serializable {
 	
 	private String nome;
 	
+	@JsonBackReference
 	@OneToMany(mappedBy = "estado")	//"estado" vem da classe Cidade (private Estado estado) - ManyToOne
 	private List<Cidade> cidades = new ArrayList<>();
 	
