@@ -3,6 +3,8 @@ package com.nelioalves.cursomc.domain;
 import java.io.Serializable;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 
@@ -11,6 +13,7 @@ public class ItemPedido implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
+	@JsonIgnore	//não serializa: Pedido e Produto
 	@EmbeddedId
 	private ItemPedidoPK id = new ItemPedidoPK();	//código único é pecualiaridade do JPA - diferente no construct
 	
@@ -30,6 +33,7 @@ public class ItemPedido implements Serializable {
 		this.preco = preco;
 	}
 	
+	@JsonIgnore
 	public Pedido getPedido() {
 		return id.getPedido();
 	}
