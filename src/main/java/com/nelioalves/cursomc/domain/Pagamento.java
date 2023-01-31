@@ -3,7 +3,7 @@ package com.nelioalves.cursomc.domain;
 import java.io.Serializable;
 import java.util.Objects;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nelioalves.cursomc.domain.enums.EstadoPagamento;
 
 import jakarta.persistence.Entity;
@@ -25,7 +25,7 @@ public abstract class Pagamento implements Serializable {
 	
 	private Integer estado; //muda EstadoPagamento para Integer (controle interno)
 
-	@JsonBackReference
+	@JsonIgnore
 	@OneToOne
 	@JoinColumn(name = "pedido_id")
 	@MapsId

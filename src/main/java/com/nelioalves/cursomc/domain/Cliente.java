@@ -7,8 +7,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.nelioalves.cursomc.domain.enums.TipoCliente;
 
 import jakarta.persistence.CollectionTable;
@@ -33,7 +32,6 @@ public class Cliente implements Serializable {
 	
 	private Integer tipo; //muda TipoCliente para Integer (controle interno)
 	
-	@JsonManagedReference //faz refência com a class Endereco (usar JsonBackReference)
 	@OneToMany(mappedBy = "cliente")
 	private List<Endereco> enderecos = new ArrayList<>();
 	
@@ -41,7 +39,7 @@ public class Cliente implements Serializable {
 	@CollectionTable(name = "TELEFONE") //não tem class Telefone, mas tem a tabela
 	private Set<String> telefones = new HashSet<>(); //Set, não permite valor repetido
 	
-	@JsonBackReference
+	@JsonIgnore
 	@OneToMany(mappedBy = "cliente")
 	private List<Pedido> pedidos = new ArrayList<>();
 	
