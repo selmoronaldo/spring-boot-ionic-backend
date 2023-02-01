@@ -21,21 +21,29 @@ public class CategoriaResource {
 	@Autowired
 	private CategoriaService service;
 	
-	// service.buscar
+	// service.find
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public ResponseEntity<?> find(@PathVariable Integer id) {
+	public ResponseEntity<Categoria> find(@PathVariable Integer id) {
 		
-		Categoria obj = service.buscar(id);	
+		Categoria obj = service.find(id);	
 		return ResponseEntity.ok().body(obj);
 	}	
 	
-	// service.insert	// <Void>, sem corpo
+	// service.insert	// <Void>, corpo vazio
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> insert(@RequestBody Categoria obj) {
 		obj = service.insert(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("/{id}").buildAndExpand(obj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
+	}	
+	
+	// service.update	// <Void>, corpo vazio
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)	// tem o value, igual ao .GET
+	public ResponseEntity<Void> update(@RequestBody Categoria obj, @PathVariable Integer id) {
+		obj.setId(id); // redundante - colocando só por garantia
+		obj = service.update(obj);
+		return ResponseEntity.noContent().build();
 	}
 
 }
