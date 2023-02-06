@@ -19,6 +19,8 @@ import com.nelioalves.cursomc.domain.Categoria;
 import com.nelioalves.cursomc.domain.dto.CategoriaDTO;
 import com.nelioalves.cursomc.services.CategoriaService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping(value="/categorias")
 public class CategoriaResource {
@@ -35,17 +37,23 @@ public class CategoriaResource {
 	}	
 	
 	// service.insert	// <Void>, corpo vazio
+	// Valid (para reconhecer a validação feita na class DTO (NotEmpty e Size))
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> insert(@RequestBody Categoria obj) {
+	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO objDTO) {
+		
+		Categoria obj = service.fromDTO(objDTO);
 		obj = service.insert(obj);
+		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("/{id}").buildAndExpand(obj.getId()).toUri();
+		
 		return ResponseEntity.created(uri).build();
 	}	
 	
 	// service.update	// <Void>, corpo vazio
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)	// tem o value, igual ao .GET
-	public ResponseEntity<Void> update(@RequestBody Categoria obj, @PathVariable Integer id) {
+	public ResponseEntity<Void> update(@Valid @RequestBody CategoriaDTO objDTO, @PathVariable Integer id) {
+		Categoria obj = service.fromDTO(objDTO);
 		obj.setId(id); // redundante - colocando só por garantia
 		obj = service.update(obj);
 		return ResponseEntity.noContent().build();

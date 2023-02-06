@@ -4,10 +4,17 @@ import java.io.Serializable;
 
 import com.nelioalves.cursomc.domain.Categoria;
 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
+
+
 public class CategoriaDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private Integer id;	
+	
+	@NotEmpty(message = "Preenchimento obrigatório")
+	@Size(min = 5, max = 80, message = "O tamanho deve ser entre 5 a 80 caracteres")
 	private String nome;
 	
 	public CategoriaDTO() {		
