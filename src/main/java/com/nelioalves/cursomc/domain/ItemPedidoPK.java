@@ -3,9 +3,9 @@ package com.nelioalves.cursomc.domain;
 import java.io.Serializable;
 import java.util.Objects;
 
-import jakarta.persistence.Embeddable;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import javax.persistence.Embeddable;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Embeddable	// informa que essa classe é um subtipo
 public class ItemPedidoPK implements Serializable {

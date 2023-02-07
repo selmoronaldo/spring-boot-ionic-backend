@@ -4,6 +4,8 @@ import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +21,6 @@ import com.nelioalves.cursomc.domain.Categoria;
 import com.nelioalves.cursomc.domain.dto.CategoriaDTO;
 import com.nelioalves.cursomc.services.CategoriaService;
 
-import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value="/categorias")
@@ -39,11 +40,9 @@ public class CategoriaResource {
 	// service.insert	// <Void>, corpo vazio
 	// Valid (para reconhecer a validação feita na class DTO (NotEmpty e Size))
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Void> insert(@Valid @RequestBody CategoriaDTO objDTO) {
-		
+	public ResponseEntity<?> insert(@Valid @RequestBody   CategoriaDTO objDTO) {		
 		Categoria obj = service.fromDTO(objDTO);
-		obj = service.insert(obj);
-		
+		obj = service.insert(obj);		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
 				.path("/{id}").buildAndExpand(obj.getId()).toUri();
 		
