@@ -40,7 +40,7 @@ public class CategoriaResource {
 	// service.insert	// <Void>, corpo vazio
 	// Valid (para reconhecer a validação feita na class DTO (NotEmpty e Size))
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<?> insert(@Valid @RequestBody   CategoriaDTO objDTO) {		
+	public ResponseEntity<?> insert(@Valid @RequestBody CategoriaDTO objDTO) {		
 		Categoria obj = service.fromDTO(objDTO);
 		obj = service.insert(obj);		
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
