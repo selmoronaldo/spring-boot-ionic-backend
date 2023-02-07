@@ -29,7 +29,7 @@ public class CategoriaService {
 	}
 	
 	public Categoria insert(Categoria obj) {
-//		obj.setId(null); // sem essa opção poderia ser considerado um update
+		obj.setId(null); // sem essa opção poderia ser considerado um update
 		return repo.save(obj);
 	}
 	
