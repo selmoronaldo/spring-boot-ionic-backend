@@ -59,7 +59,7 @@ public class ClienteResource {
 	
 	// service.delete	
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)	
-	public ResponseEntity<Void> delete(@RequestBody Cliente obj, @PathVariable Integer id) {
+	public ResponseEntity<Void> delete(@PathVariable Integer id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}
