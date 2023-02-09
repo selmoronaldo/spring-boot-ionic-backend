@@ -9,10 +9,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.nelioalves.cursomc.domain.Cidade;
 import com.nelioalves.cursomc.domain.Cliente;
+import com.nelioalves.cursomc.domain.Endereco;
 import com.nelioalves.cursomc.domain.dto.ClienteDTO;
+import com.nelioalves.cursomc.domain.dto.ClienteNewDTO;
+import com.nelioalves.cursomc.domain.enums.TipoCliente;
 import com.nelioalves.cursomc.repositories.ClienteRepository;
+import com.nelioalves.cursomc.repositories.EnderecoRepository;
 import com.nelioalves.cursomc.services.exceptions.DataIntegrityException;
 import com.nelioalves.cursomc.services.exceptions.ObjectNotFoundException;
 
@@ -22,16 +28,22 @@ public class ClienteService {
 	@Autowired
 	private ClienteRepository repo;
 	
+	@Autowired
+	private EnderecoRepository enderecoRepository;
+	
 	public Cliente find(Integer id) {
 		Optional<Cliente> obj = repo.findById(id);
 		return obj.orElseThrow(() -> new ObjectNotFoundException(
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
 	}
 	
-//	public Cliente insert(Cliente obj) {
-//		obj.setId(null); // sem essa opção poderia ser considerado um update
-//		return repo.save(obj);
-//	}
+	@Transactional
+	public Cliente insert(Cliente obj) {
+		obj.setId(null); // sem essa opção poderia ser considerado um update
+		obj = repo.save(obj);
+		enderecoRepository.saveAll(obj.getEnderecos()); //Selmo
+		return obj;
+	}
 	
 	public Cliente update(Cliente obj) {
 		Cliente newObj = find(obj.getId()); // pegando os dados antes de alterar
@@ -67,6 +79,27 @@ public class ClienteService {
 	// DTO
 	public Cliente fromDTO(ClienteDTO objDTO) {
 		return new Cliente(objDTO.getId(), objDTO.getNome(), objDTO.getEmail(), null, null);
+	}
+	
+	// Sobrecarga
+	public Cliente fromDTO(ClienteNewDTO objND) {
+		Cliente cli = new Cliente(null, objND.getNome(), objND.getEmail(), objND.getCpfOuCnpj(), TipoCliente.toEnum(objND.getTipo()));
+		
+//		Cidade cid = cidadeRepository.findById(objND.getCidadeId()).get(); //sai esse
+		Cidade cid = new Cidade(objND.getCidadeId(), null, null); //nova alteração 
+				
+		Endereco end = new Endereco(null, objND.getLogradouro(), objND.getNumero(), objND.getComplemento(), objND.getBairro(), objND.getCep(), cli, cid);
+		
+		cli.getEnderecos().add(end);
+		cli.getTelefones().add(objND.getTelefone1()); //1º telefone obrigatório
+		if (objND.getTelefone2() != null) {
+			cli.getTelefones().add(objND.getTelefone2());
+		}
+		if (objND.getTelefone3() != null) {
+			cli.getTelefones().add(objND.getTelefone3());
+		}
+		
+		return cli;
 	}
 	
 	private void updateData(Cliente newObj, Cliente obj) {

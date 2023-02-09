@@ -1,5 +1,6 @@
 package com.nelioalves.cursomc.resources;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.nelioalves.cursomc.domain.Cliente;
 import com.nelioalves.cursomc.domain.dto.ClienteDTO;
+import com.nelioalves.cursomc.domain.dto.ClienteNewDTO;
 import com.nelioalves.cursomc.services.ClienteService;
 
 @RestController
@@ -35,15 +38,15 @@ public class ClienteResource {
 
 	// service.insert	// <Void>, corpo vazio
 	// Valid (para reconhecer a validação feita na class DTO (NotEmpty e Size))
-//	@RequestMapping(method = RequestMethod.POST)
-//	public ResponseEntity<?> insert(@Valid @RequestBody ClienteDTO objDTO) {		
-//		Cliente obj = service.fromDTO(objDTO);
-//		obj = service.insert(obj);		
-//		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
-//				.path("/{id}").buildAndExpand(obj.getId()).toUri();
-//		
-//		return ResponseEntity.created(uri).build();
-//	}	
+	@RequestMapping(method = RequestMethod.POST)
+	public ResponseEntity<?> insert(@Valid @RequestBody ClienteNewDTO objND) {		
+		Cliente obj = service.fromDTO(objND);
+		obj = service.insert(obj);		
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
+				.path("/{id}").buildAndExpand(obj.getId()).toUri();
+		
+		return ResponseEntity.created(uri).build();
+	}	
 	
 	// service.update	// <Void>, corpo vazio
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)	// tem o value, igual ao .GET
