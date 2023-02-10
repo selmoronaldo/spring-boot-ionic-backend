@@ -2,24 +2,49 @@ package com.nelioalves.cursomc.domain.dto;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
+import com.nelioalves.cursomc.services.validation.ClienteInsert;
+
+@ClienteInsert // Criar uma notação para validar o cpfOuCnpj
 public class ClienteNewDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
+
+	@NotEmpty(message = "Preenchimento obrigatório")
+	@Size(min = 5, max = 120, message = "O tamanho deve ser entre 5 a 120 caracteres")
 	private String nome;
+
+	@NotEmpty(message = "Preenchimento obrigatório")
+	@Email(message = "Email inválido")
 	private String email;
+
+	@NotEmpty(message = "Preenchimento obrigatório")
 	private String cpfOuCnpj;
-	private Integer tipo; 
 	
+	private Integer tipo; 
+
+	@NotEmpty(message = "Preenchimento obrigatório")
 	private String logradouro;
+
+	@NotEmpty(message = "Preenchimento obrigatório")
 	private String numero;
-	private String complemento;
+	
+	private String complemento;	
 	private String bairro;
+
+	@NotEmpty(message = "Preenchimento obrigatório")
 	private String cep;
 	
+	// Telefone
+	@NotEmpty(message = "Preenchimento obrigatório")
 	private String telefone1;
+	
 	private String telefone2;
 	private String telefone3;
 
+	// Cidade
 	private Integer cidadeId;
 	
 	public ClienteNewDTO() {		
