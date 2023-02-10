@@ -12,6 +12,7 @@ import com.nelioalves.cursomc.domain.enums.TipoCliente;
 
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -28,7 +29,10 @@ public class Cliente implements Serializable {
 	private Integer id;
 	
 	private String nome;
+	
+	@Column(unique = true)
 	private String email;
+	
 	private String cpfOuCnpj;
 	
 	private Integer tipo; //muda TipoCliente para Integer (controle interno)
