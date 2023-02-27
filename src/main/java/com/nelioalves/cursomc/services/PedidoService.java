@@ -32,13 +32,13 @@ public class PedidoService {
 	private ProdutoService produtoService;
 	
 	@Autowired
-	private EmailService emailService;
-	
-	@Autowired
 	private ItemPedidoRepository itemPedidoRepository;
 	
 	@Autowired
 	private ClienteService clienteService;
+	
+	@Autowired
+	private EmailService emailService;
 	
 	public Pedido find(Integer id) {
 		Optional<Pedido> obj = repo.findById(id);
@@ -71,7 +71,7 @@ public class PedidoService {
 		}
 		itemPedidoRepository.saveAll(obj.getItens());
 		
-		emailService.sendOrderConfirmationEmail(obj);
+		emailService.sendOrderConfirmationEmail(obj);		//envia email texto
 		
 		return obj;
 	}

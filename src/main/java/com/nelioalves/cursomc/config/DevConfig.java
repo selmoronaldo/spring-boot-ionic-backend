@@ -16,11 +16,13 @@ import com.nelioalves.cursomc.services.SmtpEmailService;
 @Profile("dev")
 public class DevConfig {
 	
+	//POG - dá erro na chamada do value abaixo, vindo de application-dev.properties, 
+	//      funciona se vim diretamente de application.properties
+	//Value("${spring.jpa.hibernate.ddl-auto}")  //spring.jpa.hibernate.ddl-auto
+	private String strategy = "create"; // = "create"; //  = "none" 
+	
 	@Autowired
 	private DBService dbService;
-	
-	@Value("${spring.jpa.hibernate.ddl-auto}")
-	private String strategy;
 	
 	@Bean
 	public boolean instantiateDatabase() throws ParseException {
@@ -33,7 +35,7 @@ public class DevConfig {
 		return true;
 	}
 
-	@Bean
+    @Bean
 	public EmailService emailService() {
 		return new SmtpEmailService();
 	}
