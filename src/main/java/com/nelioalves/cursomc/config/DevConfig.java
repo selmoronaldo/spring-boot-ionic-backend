@@ -27,11 +27,14 @@ public class DevConfig {
 	@Bean
 	public boolean instantiateDatabase() throws ParseException {
 		
-		//evita que o BD seja recarregado
+		//evita que o BD seja sempre recarregado
+		System.out.println("PONTO 1");
 		if (!"create".equals(strategy)) {
 			return false;
 		}
+		System.out.println("PONTO 2");
 		dbService.instantiateTestDatabase();
+		System.out.println("PONTO 3");
 		return true;
 	}
 

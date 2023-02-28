@@ -10,6 +10,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.nelioalves.cursomc.domain.Cidade;
@@ -25,6 +26,9 @@ import com.nelioalves.cursomc.services.exceptions.ObjectNotFoundException;
 
 @Service
 public class ClienteService {
+	
+	@Autowired
+	private BCryptPasswordEncoder pe;
 	
 	@Autowired
 	private ClienteRepository repo;
@@ -81,12 +85,13 @@ public class ClienteService {
 	
 	// DTO
 	public Cliente fromDTO(ClienteDTO objDTO) {
-		return new Cliente(objDTO.getId(), objDTO.getNome(), objDTO.getEmail(), null, null);
+		return new Cliente(objDTO.getId(), objDTO.getNome(), objDTO.getEmail(), null, null, null);
 	}
 	
 	// Sobrecarga
 	public Cliente fromDTO(ClienteNewDTO objND) {
-		Cliente cli = new Cliente(null, objND.getNome(), objND.getEmail(), objND.getCpfOuCnpj(), TipoCliente.toEnum(objND.getTipo()));
+		Cliente cli = new Cliente(null, objND.getNome(), objND.getEmail(), objND.getCpfOuCnpj(), TipoCliente.toEnum(objND.getTipo()),
+				pe.encode(objND.getSenha()));
 		
 //		Cidade cid = cidadeRepository.findById(objND.getCidadeId()).get(); //sai esse
 		Cidade cid = new Cidade(objND.getCidadeId(), null, null); //nova alteração 
