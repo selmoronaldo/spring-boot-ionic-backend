@@ -17,7 +17,7 @@ import com.nelioalves.cursomc.services.SmtpEmailService;
 public class DevConfig {
 	
 	@Value("${spring.jpa.hibernate.ddl-auto}")  //spring.jpa.hibernate.ddl-auto
-	private String strategy; // "create" //  "none" // create-drop
+	private String strategy; 
 	
 	@Autowired
 	private DBService dbService;
@@ -26,6 +26,7 @@ public class DevConfig {
 	public boolean instantiateDatabase() throws ParseException {
 		
 		//evita que o BD seja sempre recarregado
+		//this.setStrategy("create-drop"); // "create" //  "none" // "create-drop" // "update"
 		String temp = this.getStrategy();
 		System.out.println("PONTO 1 - " + temp);
 		if (!"create-drop".equals(this.getStrategy())) {
@@ -44,6 +45,10 @@ public class DevConfig {
     
     public String getStrategy() {
     	return this.strategy;
+    }
+    
+    public void setStrategy(String strategy) {
+    	this.strategy = strategy;
     }
 
 }
