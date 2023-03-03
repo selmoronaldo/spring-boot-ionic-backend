@@ -16,10 +16,8 @@ import com.nelioalves.cursomc.services.SmtpEmailService;
 @Profile("dev")
 public class DevConfig {
 	
-	//POG - dá erro na chamada do value abaixo, vindo de application-dev.properties, 
-	//      funciona se vim diretamente de application.properties
-	//Value("${spring.jpa.hibernate.ddl-auto}")  //spring.jpa.hibernate.ddl-auto
-	private String strategy = "create"; // = "create"; //  = "none" 
+	@Value("${spring.jpa.hibernate.ddl-auto}")  //spring.jpa.hibernate.ddl-auto
+	private String strategy; // "create" //  "none" // create-drop
 	
 	@Autowired
 	private DBService dbService;
@@ -28,8 +26,9 @@ public class DevConfig {
 	public boolean instantiateDatabase() throws ParseException {
 		
 		//evita que o BD seja sempre recarregado
-		System.out.println("PONTO 1");
-		if (!"create".equals(strategy)) {
+		String temp = this.getStrategy();
+		System.out.println("PONTO 1 - " + temp);
+		if (!"create-drop".equals(this.getStrategy())) {
 			return false;
 		}
 		System.out.println("PONTO 2");
@@ -42,5 +41,9 @@ public class DevConfig {
 	public EmailService emailService() {
 		return new SmtpEmailService();
 	}
+    
+    public String getStrategy() {
+    	return this.strategy;
+    }
 
 }
